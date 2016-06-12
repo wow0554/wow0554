@@ -125,7 +125,7 @@ def display():
 			if(isReady==0):
 				continue
 			for i in range(1, len(data_store)-1):
-				print_string("   " + data_store[i] +"   ")
+				print_string(data_store[i]+" ")
 			refresh()
 
 
@@ -241,7 +241,8 @@ def fill_rectangle(x1, y1, x2, y2, color):
 										 
 										 
 def set_pixel(x, y, color):
-	screen[y][x] = color
+	if (x>=0 and x<32 and y>=0 and y<16):
+		screen[y][x] = color
 """
 for i in range(0, 32):
 	for j in range(0, 16):
@@ -260,32 +261,31 @@ def print_char(char,pos):
 	for i in range(0, 8):
 		for j in range(0, 8):
 			if (fonts[num][i] & (1<<j)) != 0:
-				set_pixel(i+pos*8, j , 1); 
+				set_pixel(i+pos, j , 1); 
 			else:
-				set_pixel(i+pos*8, j , 0); 
+				set_pixel(i+pos, j , 0); 
 
 	for i in range(0, 8):
 		for j in range(0, 8):
 			if (fonts[num][i+8] & (1<<j)) != 0:
-				set_pixel(i+pos*8, j+8 , 1); 
+				set_pixel(i+pos, j+8 , 1); 
 			else:
-				set_pixel(i+pos*8, j+8 , 0); 
+				set_pixel(i+pos, j+8 , 0); 
 
 
 
 def print_string(msg):
-	for i in range(0, len(msg)-2):
-		for j in range(i, i+4):
-			if j > len(msg)-1:
-				break
-			print_char(msg[j], j-i)
-		start = time.time()	
+	for i in range(0, 8*len(msg)+32):
+		for j in range(0,len(msg)):
+			print_char(msg[j],32-i+8*j)
+		start = time.time()
 		while True:
 			refresh()
 			end = time.time()
-			if end-start > 0.5:
+			if end-start > 0.2:
 				break
-
+			
+	
 		
 
 #################################
